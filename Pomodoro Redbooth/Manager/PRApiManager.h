@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 #import "PRApiOAuthDelegate.h"
 #import "PRUser.h"
+#import "PRTask.h"
 
 @interface PRApiManager : AFHTTPSessionManager
 
@@ -26,5 +27,9 @@
 - (void)userInfoCompletion:(void(^)(PRUser *user, NSError *error))completion;
 
 - (void)taskListAssignedToUserId:(NSInteger)userId completion:(void (^)(NSArray *tasks, NSError *error))completion;
+
+- (void)addTimeSpent:(NSInteger)minutes toTaskId:(NSInteger)taskId completion:(void (^)(NSError *error))completion;
+
+- (void)changeStatus:(NSString *)newStatus toTaskId:(NSInteger)taskId completion:(void (^)(PRTask *task, NSError *error))completion;
 
 @end

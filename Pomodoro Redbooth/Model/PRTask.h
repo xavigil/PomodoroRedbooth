@@ -10,6 +10,7 @@
 
 @interface PRTask : PRObject
 
+@property(readonly, nonatomic, strong) NSNumber *id;
 @property(readonly, nonatomic, copy)   NSString *name;
 @property(readonly, nonatomic, strong) NSNumber *projectId;
 @property(readonly, nonatomic, copy)   NSString *dueOn;

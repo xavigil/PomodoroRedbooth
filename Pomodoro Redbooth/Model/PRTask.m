@@ -13,7 +13,8 @@
 
 + (NSDictionary*)mts_mapping
 {
-    return @{@"name": mts_key(name),
+    return @{@"id": mts_key(id),
+             @"name": mts_key(name),
              @"project_id": mts_key(projectId),
              @"due_on": mts_key(dueOn),
              };
