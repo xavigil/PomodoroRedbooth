@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 #import "PRApiOAuthDelegate.h"
+#import "PRUser.h"
 
-@interface PRApiManager : AFHTTPRequestOperationManager
+@interface PRApiManager : AFHTTPSessionManager
+
+@property(nonatomic, strong) id<PRApiOAuthDelegate> delegate;
 
 +(PRApiManager *) sharedManager;
-
-- (void)setOAuthDelegate:(id<PRApiOAuthDelegate>)delegate;
 
 - (NSURL *)authorizationUrl;
 
@@ -22,6 +23,8 @@
 
 - (void)grantAccessWithCode:(NSString *)code completion:(void(^)(NSError *error))completion;
 
-- (void)taskListCompletion:(void(^)(NSArray *tasks, NSError *error))completion;
+- (void)userInfoCompletion:(void(^)(PRUser *user, NSError *error))completion;
+
+- (void)taskListAssignedToUserId:(NSInteger)userId completion:(void (^)(NSArray *tasks, NSError *error))completion;
 
 @end

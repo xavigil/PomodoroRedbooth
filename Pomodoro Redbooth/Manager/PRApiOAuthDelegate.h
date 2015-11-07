@@ -8,6 +8,8 @@
 
 @protocol PRApiOAuthDelegate
 
+- (NSString *)token;
+
 - (NSString *)refrehToken;
 
 - (void)onOAuthNewToken:(id)json;

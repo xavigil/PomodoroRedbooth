@@ -16,6 +16,7 @@ NSString * const kPRApiVersion = @"api/3/";
 NSString * const kPRAuthorization = @"oauth2/authorize";
 NSString * const kPRAuthentication = @"oauth2/token";
 
+NSString * const kPRUserInfo = @"me";
 NSString * const kPRTaskList = @"tasks";
 
 NSString * const kPRClientId = @"2d7b763a04c61aead033059a3027ef5ed6b09391701e6aa3e95173d222078b41";
@@ -64,11 +65,7 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
     [_requestQueue setSuspended:YES];
     
     self.responseSerializer = [AFJSONResponseSerializer serializer];
-}
-
-- (void)setOAuthDelegate:(id)delegate
-{
-    _delegate = delegate;
+    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 }
 
 - (NSURL *)authorizationUrl
@@ -96,23 +93,30 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
                              @"grant_type":@"authorization_code",
                              @"redirect_uri":kPRRedirectUri};
 
-    [self POST:kPRAuthentication parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [self POST:kPRAuthentication parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         [_delegate onOAuthNewToken:responseObject];
         completion(nil);
         
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         completion(error);
     }];
 }
 
 #pragma mark - Requests with token
 
-- (void)taskListCompletion:(void (^)(NSArray *, NSError *))completion
+- (void)userInfoCompletion:(void (^)(PRUser *, NSError *))completion
 {
     NSAssert(completion, @"completion can't be nil");
-    
     [self runAuthRequestBlock:^{
-        [self pr_taskListCompletion:completion];
+        [self pr_userInfoCompletion:completion];
+    }];
+}
+
+- (void)taskListAssignedToUserId:(NSInteger)userId completion:(void (^)(NSArray *, NSError *))completion
+{
+    NSAssert(completion, @"completion can't be nil");
+    [self runAuthRequestBlock:^{
+        [self pr_taskListAssignedToUserId:userId completion:completion];
     }];
 }
 
@@ -151,12 +155,12 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
                              @"refresh_token":refreshToken,
                              @"grant_type":@"refresh_token"};
     
-    [self POST:kPRAuthentication parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [self POST:kPRAuthentication parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         [_delegate onOAuthNewToken:responseObject];
         _isTokenBeingRefreshed = NO;
         [_requestQueue setSuspended:NO];
         
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [_delegate onOAuthUnauthorized];
         _isTokenBeingRefreshed = NO;
         [_requestQueue cancelAllOperations];
@@ -168,9 +172,10 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
  /**
   * Checks the returned error looking for unathorized responses
   */
-- (void)runFailureBlock:(void(^)(void))block forOperationResponse:(AFHTTPRequestOperation *)operation
+- (void)runFailureBlock:(void(^)(void))block forSessionDataTask:(NSURLSessionDataTask *)task andError:(NSError *)error
 {
-    if(operation.response.statusCode == 401){
+    NSLog(@"error = %@", error);
+    if(((NSHTTPURLResponse*)task.response).statusCode == 401){
         [_delegate onOAuthUnauthorized];
     }
     else{
@@ -180,10 +185,29 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 
 #pragma mark - Private requests
 
-- (void)pr_taskListCompletion:(void (^)(NSArray *, NSError *))completion
+- (void)pr_userInfoCompletion:(void (^)(PRUser *, NSError *))completion
 {
-    NSString *params = @"assigned_user_id=469981&status=open";
-    [self GET:[self urlWithPath:kPRTaskList queryParams:params] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    // There is a bug in AFNetworking. Making a GET request with nil as parameters results in a content-type error.
+    // Therefore, we set the the token as a query parameter
+    NSString *params = [self urlWithPath:kPRUserInfo queryParams:[NSString stringWithFormat:@"access_token=%@",[_delegate token]]];
+    [self GET:[self urlWithPath:kPRUserInfo queryParams:params] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"user response = %@", responseObject);
+        PRUser *user = [[PRUser alloc]init];
+        [user mts_setValuesForKeysWithDictionary:responseObject];
+        completion(user, nil);
+        
+    }failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        [self runFailureBlock:^{
+            completion(nil, error);
+        } forSessionDataTask:task andError:error];
+    }];
+    
+}
+
+- (void)pr_taskListAssignedToUserId:(NSInteger)userId completion:(void (^)(NSArray *, NSError *))completion
+{
+    NSString *params = [NSString stringWithFormat:@"assigned_user_id=%ld&status=open", userId];
+    [self GET:[self urlWithPath:kPRTaskList queryParams:params] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         NSLog(@"tasks = %@", responseObject);
         NSMutableArray *tasks = [@[]mutableCopy];
         for(id taskJson in responseObject)
@@ -194,10 +218,10 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
         }
         completion([tasks copy], nil);
         
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [self runFailureBlock:^{
             completion(nil, error);
-        } forOperationResponse:operation];
+        } forSessionDataTask:task andError:error];
     }];
 }
 

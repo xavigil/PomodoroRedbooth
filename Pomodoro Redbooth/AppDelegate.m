@@ -11,6 +11,7 @@
 #import "PRApiOAuthManager.h"
 #import "PRConstants.h"
 #import "PRApiOAuthManager.h"
+#import "PRUserDefaultsManager.h"
 
 @interface AppDelegate ()
 
@@ -27,7 +28,7 @@
 - (void)setup
 {
     PRApiOAuthManager *oauthDelegate = [[PRApiOAuthManager alloc] init];
-    [[PRApiManager sharedManager] setOAuthDelegate:oauthDelegate];
+    [PRApiManager sharedManager].delegate = oauthDelegate;
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kPRNotificationUnAuthorized
                                                       object:nil
@@ -36,6 +37,7 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [((UINavigationController *)self.window.rootViewController) popToRootViewControllerAnimated:YES];
+            [[PRUserDefaultsManager sharedManager] setUserId:-1];
         });
     }];
 }

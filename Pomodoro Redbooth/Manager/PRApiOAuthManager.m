@@ -74,6 +74,11 @@ NSString * const kPRNotificationUnAuthorized = @"unauthorized";
 
 #pragma mark - PRApiOAuthDelegate methods
 
+- (NSString *)token
+{
+    return _token.accessToken;
+}
+
 - (NSString *)refrehToken
 {
     return _token.refreshToken;

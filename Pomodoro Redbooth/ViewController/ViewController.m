@@ -23,6 +23,10 @@
                                              selector:@selector(onAuthorizationCodeReceived:)
                                                  name:PR_NOTIF_AUTHORIZATION_RECEIVED
                                                object:nil];
+    if([PRApiManager sharedManager].delegate.token )
+    {
+        [self pushNextViewControllerAnimated:NO];
+    }
 }
 
 - (void)dealloc
@@ -38,11 +42,15 @@
     [[PRApiManager sharedManager] grantAccessWithCode:code completion:^(NSError *error) {
         if(!error)
         {
-            [self.navigationController
-             pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"timer_vc"]
-             animated:YES];
+            [self pushNextViewControllerAnimated:YES];
         }
     }];
+}
+
+- (void)pushNextViewControllerAnimated:(BOOL)animated
+{
+    [self.navigationController pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"timer_vc"]
+                                         animated:animated];
 }
 
 #pragma mark - IBActions
