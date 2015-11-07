@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "PRApiManager.h"
+#import "PRApiOAuthManager.h"
 #import "PRConstants.h"
 
 @interface AppDelegate ()
@@ -18,7 +19,14 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self setup];
     return YES;
+}
+
+- (void)setup
+{
+    PRApiOAuthManager *oauthDelegate = [[PRApiOAuthManager alloc] init];
+    [[PRApiManager sharedManager] setOAuthDelegate:oauthDelegate];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options

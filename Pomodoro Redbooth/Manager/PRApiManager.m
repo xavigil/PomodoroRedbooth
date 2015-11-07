@@ -8,8 +8,6 @@
 
 #import "PRApiManager.h"
 #import <Motis/Motis.h>
-#import "PRKeychainManager.h"
-#import "PRToken.h"
 #import "PRTask.h"
 
 NSString * const kPRHost = @"https://redbooth.com";
@@ -28,7 +26,7 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 
 @interface PRApiManager()
 {
-    PRToken *_token;
+    id<PRApiOAuthDelegate> _delegate;
 }
 
 @end
@@ -50,17 +48,28 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
     self = [super initWithBaseURL:[NSURL URLWithString:kPRHost]];
     if(self)
     {
-        PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
-        _token = [[PRToken alloc] initWithDictionary:[keychain userAccessToken]];
-        NSLog(@"token = %@", _token.accessToken);
         self.responseSerializer = [AFJSONResponseSerializer serializer];
     }
     return self;
 }
 
+- (void)setOAuthDelegate:(id)delegate
+{
+    _delegate = delegate;
+}
+
 - (NSURL *)authorizationUrl
 {
     return [NSURL URLWithString:kPRAuthorizationUrl];
+}
+
+- (void)setTokenToHTTPHeader:(NSString *)token
+{
+    NSString *authHeader = @"Authorization";
+    if(token)
+        [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:authHeader];
+    else
+        [self.requestSerializer setValue:nil forHTTPHeaderField:authHeader];
 }
 
 - (void)grantAccessWithCode:(NSString *)code completion:(void (^)(NSError *))completion
@@ -73,7 +82,7 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
                              @"redirect_uri":kPRRedirectUri};
     [self POST:kPRAuthentication parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject)
     {
-        [self parseAndUpdateNewToken:responseObject];
+        [_delegate onOAuthNewToken:responseObject];
         completion(nil);
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
@@ -114,46 +123,6 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
         url = [url stringByAppendingString:[NSString stringWithFormat:@"?%@",params]];
     }
     return url;
-}
-
-- (BOOL)isTokenExpiredOrAboutToExpire:(PRToken *)token
-{
-    if( !token ) return YES;
-    int offset = -60; // <-- We substract one minut to the actual expiring date to avoid problems in low connections.
-    NSDate *expiringDateWithOffset = [NSDate dateWithTimeInterval:offset sinceDate:[token expirationDate]];
-    return ([expiringDateWithOffset compare:[NSDate date]] == NSOrderedAscending);
-}
-
-- (void)parseAndUpdateNewToken:(id)json
-{
-    // parse
-    PRToken *token = [[PRToken alloc] init];
-    [token mts_setValuesForKeysWithDictionary:json];
-    
-    // update header
-    [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token.accessToken] forHTTPHeaderField:@"Authorization"];
-    
-    // keychain
-    PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
-    [keychain setUserAccessToken:[token dictionary]];
-    
-    // ivar
-    _token = token;
-    
-    NSLog(@"token = %@", _token.accessToken);    
-}
-
-- (void)resetToken
-{
-    // keychain
-    PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
-    [keychain resetUserToken];
-    
-    // update header
-    [self.requestSerializer setValue:nil forHTTPHeaderField:@"Authorization"];
-    
-    // ivar
-    _token = nil;
 }
 
 @end

@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
+#import "PRApiOAuthDelegate.h"
 
 @interface PRApiManager : AFHTTPSessionManager
 
 +(PRApiManager *) sharedManager;
 
+- (void)setOAuthDelegate:(id<PRApiOAuthDelegate>)delegate;
+
 - (NSURL *)authorizationUrl;
+
+- (void)setTokenToHTTPHeader:(NSString *)token;
 
 - (void)grantAccessWithCode:(NSString *)code completion:(void(^)(NSError *error))completion;
 

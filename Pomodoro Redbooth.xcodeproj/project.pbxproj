@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		10758499DB5C02A195D98A63 /* Pods_Pomodoro_Redbooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4681BB4F74A082DFF1475197 /* Pods_Pomodoro_Redbooth.framework */; };
+		471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A131BEE191F0017329D /* PRApiOAuthManager.m */; };
 		47BF53241BED512300CC2245 /* PRApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53191BED512300CC2245 /* PRApiManager.m */; };
 		47BF53251BED512300CC2245 /* PRObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF531C1BED512300CC2245 /* PRObject.m */; };
 		47BF53261BED512300CC2245 /* PRToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF531E1BED512300CC2245 /* PRToken.m */; };
@@ -37,6 +38,9 @@
 
 /* Begin PBXFileReference section */
 		4681BB4F74A082DFF1475197 /* Pods_Pomodoro_Redbooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pomodoro_Redbooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		471E6A111BEE18AD0017329D /* PRApiOAuthDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRApiOAuthDelegate.h; sourceTree = "<group>"; };
+		471E6A121BEE191F0017329D /* PRApiOAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRApiOAuthManager.h; sourceTree = "<group>"; };
+		471E6A131BEE191F0017329D /* PRApiOAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRApiOAuthManager.m; sourceTree = "<group>"; };
 		47BF53181BED512300CC2245 /* PRApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRApiManager.h; sourceTree = "<group>"; };
 		47BF53191BED512300CC2245 /* PRApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRApiManager.m; sourceTree = "<group>"; };
 		47BF531B1BED512300CC2245 /* PRObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRObject.h; sourceTree = "<group>"; };
@@ -101,10 +105,13 @@
 		47BF53171BED512300CC2245 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				471E6A111BEE18AD0017329D /* PRApiOAuthDelegate.h */,
 				47BF53181BED512300CC2245 /* PRApiManager.h */,
 				47BF53191BED512300CC2245 /* PRApiManager.m */,
 				47BF53291BED515F00CC2245 /* PRKeychainManager.h */,
 				47BF532A1BED515F00CC2245 /* PRKeychainManager.m */,
+				471E6A121BEE191F0017329D /* PRApiOAuthManager.h */,
+				471E6A131BEE191F0017329D /* PRApiOAuthManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -370,6 +377,7 @@
 				47BF53281BED512300CC2245 /* ViewController.m in Sources */,
 				47D3A54A1BEBF41A004844E6 /* AppDelegate.m in Sources */,
 				47BF53321BED5E2F00CC2245 /* PRTask.m in Sources */,
+				471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */,
 				47BF53241BED512300CC2245 /* PRApiManager.m in Sources */,
 				47BF53251BED512300CC2245 /* PRObject.m in Sources */,
 				47BF53261BED512300CC2245 /* PRToken.m in Sources */,
