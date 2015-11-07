@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "PRApiOAuthDelegate.h"
 
+extern NSString * const kPRNotificationUnAuthorized;
+
 @interface PRApiOAuthManager : NSObject<PRApiOAuthDelegate>
 
 @end

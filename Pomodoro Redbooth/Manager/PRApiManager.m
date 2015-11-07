@@ -27,6 +27,8 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 @interface PRApiManager()
 {
     id<PRApiOAuthDelegate> _delegate;
+    BOOL _isTokenBeingRefreshed;
+    NSOperationQueue *_requestQueue;
 }
 
 @end
@@ -48,9 +50,20 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
     self = [super initWithBaseURL:[NSURL URLWithString:kPRHost]];
     if(self)
     {
-        self.responseSerializer = [AFJSONResponseSerializer serializer];
+        [self setup];
     }
     return self;
+}
+
+- (void)setup
+{
+    _isTokenBeingRefreshed = NO;
+    
+    _requestQueue = [[NSOperationQueue alloc]init];
+    [_requestQueue setMaxConcurrentOperationCount:1];
+    [_requestQueue setSuspended:YES];
+    
+    self.responseSerializer = [AFJSONResponseSerializer serializer];
 }
 
 - (void)setOAuthDelegate:(id)delegate
@@ -65,6 +78,7 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 
 - (void)setTokenToHTTPHeader:(NSString *)token
 {
+    NSLog(@"setTokenToHTTPHeader = %@", token);
     NSString *authHeader = @"Authorization";
     if(token)
         [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:authHeader];
@@ -75,17 +89,18 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 - (void)grantAccessWithCode:(NSString *)code completion:(void (^)(NSError *))completion
 {
     NSAssert(completion, @"completion can't be nil");
+    
     NSDictionary *params = @{@"client_id":kPRClientId,
                              @"client_secret":kPRClientSecret,
                              @"code":code,
                              @"grant_type":@"authorization_code",
                              @"redirect_uri":kPRRedirectUri};
-    [self POST:kPRAuthentication parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject)
-    {
+
+    [self POST:kPRAuthentication parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         [_delegate onOAuthNewToken:responseObject];
         completion(nil);
         
-    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
         completion(error);
     }];
 }
@@ -95,22 +110,10 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 - (void)taskListCompletion:(void (^)(NSArray *, NSError *))completion
 {
     NSAssert(completion, @"completion can't be nil");
-    NSString *params = @"assigned_user_id=469981&status=open";
-    [self GET:[self urlWithPath:kPRTaskList queryParams:params] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject)
-     {
-         NSLog(@"tasks = %@", responseObject);
-         NSMutableArray *tasks = [@[]mutableCopy];
-         for(id taskJson in responseObject)
-         {
-             PRTask *task = [[PRTask alloc]init];
-             [task mts_setValuesForKeysWithDictionary:taskJson];
-             [tasks addObject:task];
-         }
-         completion([tasks copy], nil);
-         
-     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-         completion(nil, error);
-     }];
+    
+    [self runAuthRequestBlock:^{
+        [self pr_taskListCompletion:completion];
+    }];
 }
 
 #pragma mark - Private methods
@@ -118,11 +121,84 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 - (NSString *)urlWithPath:(NSString *)path queryParams:(NSString *)params
 {
     NSString *url = [NSString stringWithFormat:@"%@%@", kPRApiVersion, path];
-    if(params)
-    {
+    if(params){
         url = [url stringByAppendingString:[NSString stringWithFormat:@"?%@",params]];
     }
     return url;
+}
+
+- (void)runAuthRequestBlock:(void(^)(void))request
+{
+    if([_delegate isTokenExpiredOrAboutToExpire])
+    {
+        if(!_isTokenBeingRefreshed){
+            [self refreshToken:[_delegate refrehToken]];
+        }
+        [_requestQueue setSuspended:YES];
+        [_requestQueue addOperationWithBlock:request];
+    }
+    else{
+        request();
+    }
+}
+
+- (void)refreshToken:(NSString *)refreshToken
+{
+    NSLog(@"refreshing token...");
+    _isTokenBeingRefreshed = YES;
+    NSDictionary *params = @{@"client_id":kPRClientId,
+                             @"client_secret":kPRClientSecret,
+                             @"refresh_token":refreshToken,
+                             @"grant_type":@"refresh_token"};
+    
+    [self POST:kPRAuthentication parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        [_delegate onOAuthNewToken:responseObject];
+        _isTokenBeingRefreshed = NO;
+        [_requestQueue setSuspended:NO];
+        
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+        [_delegate onOAuthUnauthorized];
+        _isTokenBeingRefreshed = NO;
+        [_requestQueue cancelAllOperations];
+        [_requestQueue setSuspended:NO];
+        
+    }];
+}
+
+ /**
+  * Checks the returned error looking for unathorized responses
+  */
+- (void)runFailureBlock:(void(^)(void))block forOperationResponse:(AFHTTPRequestOperation *)operation
+{
+    if(operation.response.statusCode == 401){
+        [_delegate onOAuthUnauthorized];
+    }
+    else{
+        if(block) block();
+    }
+}
+
+#pragma mark - Private requests
+
+- (void)pr_taskListCompletion:(void (^)(NSArray *, NSError *))completion
+{
+    NSString *params = @"assigned_user_id=469981&status=open";
+    [self GET:[self urlWithPath:kPRTaskList queryParams:params] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSLog(@"tasks = %@", responseObject);
+        NSMutableArray *tasks = [@[]mutableCopy];
+        for(id taskJson in responseObject)
+        {
+            PRTask *task = [[PRTask alloc]init];
+            [task mts_setValuesForKeysWithDictionary:taskJson];
+            [tasks addObject:task];
+        }
+        completion([tasks copy], nil);
+        
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+        [self runFailureBlock:^{
+            completion(nil, error);
+        } forOperationResponse:operation];
+    }];
 }
 
 @end

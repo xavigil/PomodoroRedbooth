@@ -12,6 +12,8 @@
 #import "PRApiManager.h"
 #import "PRToken.h"
 
+NSString * const kPRNotificationUnAuthorized = @"unauthorized";
+
 @interface PRApiOAuthManager()
 {
     PRToken *_token;
@@ -37,7 +39,7 @@
 {
     PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
     _token = [[PRToken alloc] initWithDictionary:[keychain userAccessToken]];
-    NSLog(@"token = %@", _token.accessToken);
+    [[PRApiManager sharedManager] setTokenToHTTPHeader:_token.accessToken];
 }
 
 - (void)parseAndUpdateNewToken:(id)json
@@ -45,6 +47,9 @@
     // parse
     PRToken *token = [[PRToken alloc] init];
     [token mts_setValuesForKeysWithDictionary:json];
+    
+    // ivar
+    _token = token;
 
     // update header
     [[PRApiManager sharedManager] setTokenToHTTPHeader:_token.accessToken];
@@ -52,11 +57,6 @@
     // keychain
     PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
     [keychain setUserAccessToken:[token dictionary]];
-
-    // ivar
-    _token = token;
-
-    NSLog(@"token = %@", _token.accessToken);
 }
 
 - (void)resetToken
@@ -74,6 +74,11 @@
 
 #pragma mark - PRApiOAuthDelegate methods
 
+- (NSString *)refrehToken
+{
+    return _token.refreshToken;
+}
+
 - (void)onOAuthNewToken:(id)json
 {
     [self parseAndUpdateNewToken:json];
@@ -82,6 +87,7 @@
 - (void)onOAuthUnauthorized
 {
     [self resetToken];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"unauthorized" object:self userInfo:nil];
 }
 
 - (BOOL)isTokenExpiredOrAboutToExpire

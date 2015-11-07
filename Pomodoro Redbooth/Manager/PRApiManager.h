@@ -10,7 +10,7 @@
 #import "AFNetworking.h"
 #import "PRApiOAuthDelegate.h"
 
-@interface PRApiManager : AFHTTPSessionManager
+@interface PRApiManager : AFHTTPRequestOperationManager
 
 +(PRApiManager *) sharedManager;
 

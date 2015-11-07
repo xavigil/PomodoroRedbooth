@@ -10,6 +10,7 @@
 #import "PRApiManager.h"
 #import "PRApiOAuthManager.h"
 #import "PRConstants.h"
+#import "PRApiOAuthManager.h"
 
 @interface AppDelegate ()
 
@@ -27,6 +28,16 @@
 {
     PRApiOAuthManager *oauthDelegate = [[PRApiOAuthManager alloc] init];
     [[PRApiManager sharedManager] setOAuthDelegate:oauthDelegate];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kPRNotificationUnAuthorized
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification * _Nonnull note)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [((UINavigationController *)self.window.rootViewController) popToRootViewControllerAnimated:YES];
+        });
+    }];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
