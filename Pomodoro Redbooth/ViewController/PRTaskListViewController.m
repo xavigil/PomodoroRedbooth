@@ -14,6 +14,8 @@
 
     UIRefreshControl *_refreshControl;
     NSDictionary *_tasksSections;
+    BOOL _taskResolved;
+    NSDictionary *_tasksSectionsAfterDeletion; // <-- Waiting to be applied
     BOOL _showSpinnerAfterViewLoad;
     NSDateFormatter *_dateFormatter;
 
@@ -55,6 +57,16 @@
     bar.hidden = NO;
     self.navigationItem.hidesBackButton = YES;
 
+    if(_taskResolved)
+    {
+        _taskResolved = NO;
+        _tasksSections = _tasksSectionsAfterDeletion;
+        _tasksSectionsAfterDeletion = nil;
+        NSIndexPath *selectedRowIndexPath = [self.tableView indexPathForSelectedRow];
+        if (selectedRowIndexPath) {
+            [self.tableView deleteRowsAtIndexPaths:@[selectedRowIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -116,14 +128,22 @@
     }
 }
 
-- (void)showTasksInSections:(NSDictionary *)tasksSections
+- (void)showTasksInSections:(NSDictionary *)tasksSections afterDeletion:(BOOL)afterDeletion
 {
-    [_refreshControl endRefreshing];
-    BOOL anyTask = (((NSArray *)tasksSections[@(0)]).count > 0 ||
-                    ((NSArray *)tasksSections[@(1)]).count > 0 ||
-                    ((NSArray *)tasksSections[@(2)]).count > 0);
-    _tasksSections = anyTask?tasksSections:nil;
-    [self.tableView reloadData];
+    if(!afterDeletion)
+    {
+        [_refreshControl endRefreshing];
+        BOOL anyTask = (((NSArray *)tasksSections[@(0)]).count > 0 ||
+                        ((NSArray *)tasksSections[@(1)]).count > 0 ||
+                        ((NSArray *)tasksSections[@(2)]).count > 0);
+        _tasksSections = anyTask?tasksSections:nil;
+        [self.tableView reloadData];
+    }
+    else
+    {
+        _taskResolved = YES;
+        _tasksSectionsAfterDeletion = tasksSections;
+    }
 }
 
 #pragma mark - Private methods

@@ -20,6 +20,14 @@ typedef enum{
 }eSection;
 
 
+@interface PRTaskListInteractor()
+{
+    NSArray *_tasksReceived;
+}
+
+
+@end
+
 @implementation PRTaskListInteractor
 
 #pragma mark - PRInteractorDelegate methods
@@ -33,13 +41,23 @@ typedef enum{
 
 #pragma mark - PRTaskListInteractorDelegate methods
 
+- (instancetype)init
+{
+    self = [super init];
+    if(self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskResolved:) name:@"task_resolved" object:nil];
+    }
+    return self;
+}
+
 - (void)requestTasks
 {
     NSInteger userId = [[PRUserDefaultsManager sharedManager] userId];
     void(^taskListRequest)(NSInteger) = ^(NSInteger uid){
         [[PRApiManager sharedManager] taskListAssignedToUserId:uid completion:^(NSArray *tasks, NSError *error){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.vcDelegate showTasksInSections:[self filterTasksIntoSections:tasks]];
+                [self.vcDelegate showTasksInSections:[self filterTasksIntoSections:tasks] afterDeletion:NO];
             });
         }];
     };
@@ -76,6 +94,7 @@ typedef enum{
 
 - (NSDictionary *)filterTasksIntoSections:(NSArray *)tasks
 {
+    _tasksReceived = tasks;
     NSMutableArray *sortedTasks = [tasks mutableCopy];
     [sortedTasks sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dueOn" ascending:YES]]];
     
@@ -131,5 +150,15 @@ typedef enum{
     return [NSString stringWithFormat:@"%ld-%02ld-%02ld",comps.year, comps.month, comps.day];
 }
 
+
+- (void)taskResolved:(NSNotification *)notification
+{
+    NSInteger taskId = [[notification.userInfo objectForKey:@"task_id"] integerValue];
+    NSMutableArray *mutableArray = [_tasksReceived mutableCopy];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"id == %ld", taskId]];
+    [mutableArray removeObjectsInArray:[_tasksReceived filteredArrayUsingPredicate:predicate]];
+    NSDictionary *newTasksInSections = [self filterTasksIntoSections:[mutableArray copy]];
+    [self.vcDelegate showTasksInSections:newTasksInSections afterDeletion:YES];
+}
 
 @end

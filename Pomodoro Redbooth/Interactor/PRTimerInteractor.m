@@ -108,6 +108,9 @@ typedef enum{
         if(!error)
         {
             [[PRApiManager sharedManager] changeStatus:@"resolved" toTaskId:taskId completion:^(PRTask *task, NSError *error) {
+                if(!error){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"task_resolved" object:self userInfo:@{@"task_id":task.id}];
+                }
                 [self.vcDelegate showHUD];
                 [((UIViewController *)self.vcDelegate).navigationController popViewControllerAnimated:YES];
             }];

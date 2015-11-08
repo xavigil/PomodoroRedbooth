@@ -16,11 +16,11 @@
 "alert_logout_title" = "Logout";
 "alert_logout_message" = "Do you really want to logout?";
 "alert_abandon_title" = "Exit";
-"alert_abandon_message" = "You are leaving the pomodoro task.\nWaht do you want to do?\n(if the current pomodoro is not finished its time won't be added)";
+"alert_abandon_message" = "You are leaving the pomodoro task.\nWhat do you want to do?\n(if the current pomodoro is not finished\nits time won't be added)";
 
-"add_time" = "Add time spent";
+"add_time" = "Add time spent to the task";
 "add_time_and_resolve" = "Add time spent and resolve";
-"just_exit" = "Just exit";
+"just_exit" = "Just leave the task";
 "cancel" = "Cancel";
 
 "yes" = "Yes";

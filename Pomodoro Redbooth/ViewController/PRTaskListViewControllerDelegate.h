@@ -12,6 +12,6 @@
 
 - (void)showSpinner;
 
-- (void)showTasksInSections:(NSDictionary *)tasksSections;
+- (void)showTasksInSections:(NSDictionary *)tasksSections afterDeletion:(BOOL)afterDeletion;
 
 @end

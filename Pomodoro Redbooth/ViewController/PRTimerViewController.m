@@ -154,7 +154,6 @@
 
 - (void)onCancel
 {
-    [self.timer stop];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:NSLocalizedString(@"alert_abandon_message", nil)
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
@@ -190,7 +189,6 @@
                                 handler:^(UIAlertAction * action)
                                 {
                                     [alertController dismissViewControllerAnimated:YES completion:nil];
-                                    [self.timer resume];
                                 }];
     
     [alertController addAction:add_time];
