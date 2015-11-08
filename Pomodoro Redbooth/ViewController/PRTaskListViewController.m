@@ -14,12 +14,12 @@
 
     UIRefreshControl *_refreshControl;
     NSDictionary *_tasksSections;
+    BOOL _showSpinnerAfterViewLoad;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self setup];
 }
 
@@ -39,9 +39,16 @@
     [self.tableView addSubview:_refreshControl];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if(_showSpinnerAfterViewLoad){
+        [self showSpinner];
+    }
+}
+
 - (void)refreshData
 {
-    NSLog(@"refreshData");
     [self.interactor requestTasks];
 }
 
@@ -74,7 +81,13 @@
 
 - (void)showSpinner
 {
-    NSLog(@"not impleemnted yet");
+    if(!_refreshControl){
+        _showSpinnerAfterViewLoad = YES;
+    }
+    else{
+        [_refreshControl beginRefreshing];
+        [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentOffset.y - _refreshControl.frame.size.height) animated:YES];
+    }
 }
 
 - (void)showTasksInSections:(NSDictionary *)tasksSections
@@ -93,27 +106,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if(_tasksSections){
-        self.tableView.backgroundView = nil;
-        return 3;
-    }
-    else {
-        
-        // Display a message when the table is empty
-        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-        
-        messageLabel.text = @"No tasks assigned to you.";
-        messageLabel.textColor = [UIColor blackColor];
-        messageLabel.numberOfLines = 0;
-        messageLabel.textAlignment = NSTextAlignmentCenter;
-        messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
-        [messageLabel sizeToFit];
-        
-        self.tableView.backgroundView = messageLabel;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    }
-    
-    return 0;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

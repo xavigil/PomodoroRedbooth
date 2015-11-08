@@ -9,6 +9,7 @@
 #import "PRApiManager.h"
 #import <Motis/Motis.h>
 #import "PRTask.h"
+#import "AFNetworkActivityIndicatorManager.h"
 
 NSString * const kPRHost = @"https://redbooth.com";
 NSString * const kPRApiVersion = @"api/3/";
@@ -59,6 +60,8 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 
 - (void)setup
 {
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    
     _isTokenBeingRefreshed = NO;
     
     _requestQueue = [[NSOperationQueue alloc]init];
