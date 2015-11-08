@@ -6,4 +6,5 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Pomodoro Redbooth' do
   pod 'AFNetworking', '~> 2.6'
   pod 'Motis', '~>1.4.0'
+  pod 'SFRoundProgressCounterView'
 end

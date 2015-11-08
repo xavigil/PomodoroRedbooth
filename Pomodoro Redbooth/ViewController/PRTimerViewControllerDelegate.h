@@ -10,4 +10,14 @@
 
 - (UIViewController *)vc;
 
+- (void)setTaskName:(NSString *)name;
+
+- (void)setTimerViewInterval:(NSNumber *)interval;
+
+- (void)playTimerView;
+
+- (void)resumeTimerView;
+
+- (void)pauseTimerView;
+
 @end

@@ -9,9 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "PRTimerInteractorDelegate.h"
 #import "PRTimerViewControllerDelegate.h"
+#import "SFRoundProgressCounterView.h"
 
 @interface PRTimerViewController : UIViewController<PRTimerViewControllerDelegate>
 
 @property (nonatomic, strong) id<PRTimerInteractorDelegate> interactor;
+
+@property (weak, nonatomic) IBOutlet SFRoundProgressCounterView *timer;
+@property (weak, nonatomic) IBOutlet UIView *vTimerDummy;
+@property (weak, nonatomic) IBOutlet UIImageView *imgPlayback;
+
+@property (weak, nonatomic) IBOutlet UIView *vTitleMarginLeft;
+@property (weak, nonatomic) IBOutlet UIView *vTitleMarginRight;
+@property (weak, nonatomic) IBOutlet UILabel *lblTaskTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblCurrentTask;
 
 @end

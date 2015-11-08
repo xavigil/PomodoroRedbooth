@@ -8,6 +8,8 @@
 
 @protocol PRTimerInteractorDelegate
 
+- (void)viewWillAppear;
 
+- (void)playbackTouch;
 
 @end

@@ -10,6 +10,8 @@
 #import "PRApiManager.h"
 #import "PRUserDefaultsManager.h"
 #import "PRTask.h"
+#import "PRConstants.h"
+
 
 @implementation PRTimerViewController
 
@@ -29,6 +31,36 @@
                                               target:self
                                               action:@selector(onCancel)];
     
+    self.timer.outerCircleThickness = [NSNumber numberWithFloat:20.0];
+    self.timer.innerTrackColor = [UIColor grayColor];
+    self.timer.outerTrackColor = [UIColor grayColor];
+    
+    self.timer.outerProgressColor = SECONDARY_COLOR;
+    self.timer.innerProgressColor = SECONDARY_COLOR;
+    self.timer.labelColor = [UIColor grayColor];
+    
+    self.timer.hideFraction = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(timerTap:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [self.vTimerDummy addGestureRecognizer:tap];
+    [self.vTimerDummy setUserInteractionEnabled:YES];
+    
+    [self.imgPlayback setBackgroundColor:[UIColor clearColor]];
+    [self.imgPlayback setTintColor:SECONDARY_COLOR];
+    
+    [self.vTitleMarginLeft setBackgroundColor:SECONDARY_COLOR];
+    [self.vTitleMarginRight setBackgroundColor:SECONDARY_COLOR];
+    [self.lblTaskTitle setBackgroundColor:SECONDARY_COLOR];
+    [self.lblTaskTitle setTextColor:[UIColor whiteColor]];
+    [self.lblTaskTitle setFont:FONT_TITLE];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.interactor viewWillAppear];
 }
 
 #pragma mark - PRTimerViewControllerDelegate methods
@@ -38,8 +70,41 @@
     return self;
 }
 
+- (void)setTaskName:(NSString *)name
+{
+    [self.lblCurrentTask setText:name];
+}
+
+- (void)setTimerViewInterval:(NSNumber *)interval
+{
+    self.timer.intervals = @[interval];
+}
+
+- (void)playTimerView
+{
+    [self.imgPlayback setImage:[UIImage imageNamed:@"ic_pause_white_48pt"]];
+    [self.timer start];
+}
+
+- (void)resumeTimerView
+{
+    [self.imgPlayback setImage:[UIImage imageNamed:@"ic_pause_white_48pt"]];
+    [self.timer resume];
+}
+
+- (void)pauseTimerView
+{
+    [self.imgPlayback setImage:[UIImage imageNamed:@"ic_play_arrow_white_48pt"]];
+    [self.timer stop];
+}
+
 
 #pragma mark - Private methods
+
+- (void)timerTap:(UIGestureRecognizer *)gestureRecognizer
+{
+    [self.interactor playbackTouch];
+}
 
 - (void)onCancel
 {
