@@ -24,24 +24,7 @@
         
     }];
 
-//    NSInteger userId = [[PRUserDefaultsManager sharedManager] userId];
-//    void(^taskListRequest)(NSInteger) = ^(NSInteger uid){
-//        [[PRApiManager sharedManager] taskListAssignedToUserId:uid completion:^(NSArray *tasks, NSError *error){
-//        }];
-//    };
-//    
-//    if(userId>0){
-//        taskListRequest(userId);
-//    }
-//    else
-//    {
-//        [[PRApiManager sharedManager]userInfoCompletion:^(PRUser *user, NSError *error) {
-//            if(!error){
-//                [[PRUserDefaultsManager sharedManager] setUserId:[user.id integerValue]];
-//                taskListRequest([user.id integerValue]);
-//            }
-//        }];
-//    }
+
 }
 
 @end

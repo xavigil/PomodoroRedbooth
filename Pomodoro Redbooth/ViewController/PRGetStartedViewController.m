@@ -6,19 +6,22 @@
 //  Copyright © 2015 Xavi Gil. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PRGetStartedViewController.h"
 #import "PRApiManager.h"
 #import "PRConstants.h"
 #import "PRTimerViewController.h"
 
-@interface ViewController ()
+@interface PRGetStartedViewController ()
 
 @end
 
-@implementation ViewController
+@implementation PRGetStartedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.view setBackgroundColor:PRIMARY_COLOR];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onAuthorizationCodeReceived:)
                                                  name:PR_NOTIF_AUTHORIZATION_RECEIVED
@@ -27,6 +30,13 @@
     {
         [self pushNextViewControllerAnimated:NO];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UINavigationBar *bar = self.navigationController.navigationBar;
+    bar.hidden = YES;
 }
 
 - (void)dealloc
@@ -49,7 +59,7 @@
 
 - (void)pushNextViewControllerAnimated:(BOOL)animated
 {
-    [self.navigationController pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"timer_vc"]
+    [self.navigationController pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"task_list"]
                                          animated:animated];
 }
 

@@ -40,6 +40,10 @@ NSString * const kPRNotificationUnAuthorized = @"unauthorized";
     PRKeychainManager *keychain = [[PRKeychainManager alloc] init];
     _token = [[PRToken alloc] initWithDictionary:[keychain userAccessToken]];
     [[PRApiManager sharedManager] setTokenToHTTPHeader:_token.accessToken];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"logout" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [self onOAuthUnauthorized];
+    }];
 }
 
 - (void)parseAndUpdateNewToken:(id)json
@@ -92,7 +96,7 @@ NSString * const kPRNotificationUnAuthorized = @"unauthorized";
 - (void)onOAuthUnauthorized
 {
     [self resetToken];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"unauthorized" object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPRNotificationUnAuthorized object:self userInfo:nil];
 }
 
 - (BOOL)isTokenExpiredOrAboutToExpire

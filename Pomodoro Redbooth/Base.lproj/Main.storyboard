@@ -21,10 +21,10 @@
             </objects>
             <point key="canvasLocation" x="-1018" y="133"/>
         </scene>
-        <!--View Controller-->
+        <!--TEST-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="PRGetStartedViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -47,11 +47,53 @@
                             <constraint firstItem="5nR-sX-tTY" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bgo-X8-mb5"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="atk-QB-DfH"/>
+                    <navigationItem key="navigationItem" title="TEST" id="atk-QB-DfH"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-283" y="133"/>
+        </scene>
+        <!--Task List View Controller-->
+        <scene sceneID="9gN-Co-rwI">
+            <objects>
+                <viewController storyboardIdentifier="task_list" id="DpS-Au-RE5" customClass="PRTaskListViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hZ2-ur-Abs"/>
+                        <viewControllerLayoutGuide type="bottom" id="NU4-rV-1lB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ldz-C1-3rr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YAN-KN-e4r">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="554"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhI-LG-zzN">
+                                <rect key="frame" x="269" y="562" width="62" height="30"/>
+                                <state key="normal" title="LOGOUT"/>
+                                <connections>
+                                    <action selector="onLogout:" destination="DpS-Au-RE5" eventType="touchUpInside" id="EhW-q4-jwe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YAN-KN-e4r" firstAttribute="leading" secondItem="Ldz-C1-3rr" secondAttribute="leading" id="21r-Ev-phe"/>
+                            <constraint firstItem="KhI-LG-zzN" firstAttribute="top" secondItem="YAN-KN-e4r" secondAttribute="bottom" constant="8" id="45w-Rr-FAT"/>
+                            <constraint firstItem="KhI-LG-zzN" firstAttribute="centerX" secondItem="Ldz-C1-3rr" secondAttribute="centerX" id="D6w-al-Qh0"/>
+                            <constraint firstAttribute="trailing" secondItem="YAN-KN-e4r" secondAttribute="trailing" id="NzE-2u-7he"/>
+                            <constraint firstItem="NU4-rV-1lB" firstAttribute="top" secondItem="KhI-LG-zzN" secondAttribute="bottom" constant="8" id="tov-EW-dUe"/>
+                            <constraint firstItem="YAN-KN-e4r" firstAttribute="top" secondItem="Ldz-C1-3rr" secondAttribute="top" id="xqe-rU-TbE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="YAN-KN-e4r" id="3CE-PB-RT9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w5B-59-xeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-63" y="800"/>
         </scene>
         <!--Timer View Controller-->
         <scene sceneID="Ica-OG-ZjC">

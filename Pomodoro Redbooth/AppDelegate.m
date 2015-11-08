@@ -13,6 +13,8 @@
 #import "PRApiOAuthManager.h"
 #import "PRUserDefaultsManager.h"
 
+
+
 @interface AppDelegate ()
 
 @end
@@ -22,6 +24,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self setup];
+    [self setupAppearance];
     return YES;
 }
 
@@ -40,6 +43,19 @@
             [[PRUserDefaultsManager sharedManager] setUserId:-1];
         });
     }];
+}
+
+- (void)setupAppearance
+{
+    
+    [[UINavigationBar appearance] setBarTintColor:PRIMARY_COLOR];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor whiteColor], NSForegroundColorAttributeName,
+                                                           FONT_TITLE, NSFontAttributeName, nil]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options

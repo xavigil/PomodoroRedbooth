@@ -7,3 +7,7 @@
 */
 
 "timer" = "Timer";
+
+"today" = "TODAY";
+"due_soon" = "DUE SOON";
+"far_future" = "FAR FUTURE";

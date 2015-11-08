@@ -11,11 +11,12 @@
 		471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A131BEE191F0017329D /* PRApiOAuthManager.m */; };
 		471E6A171BEE51FC0017329D /* PRUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A161BEE51FC0017329D /* PRUser.m */; };
 		471E6A1A1BEE55DD0017329D /* PRUserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */; };
+		47BC99C41BEEA4F900A367C2 /* PRTaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */; };
 		47BF53241BED512300CC2245 /* PRApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53191BED512300CC2245 /* PRApiManager.m */; };
 		47BF53251BED512300CC2245 /* PRObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF531C1BED512300CC2245 /* PRObject.m */; };
 		47BF53261BED512300CC2245 /* PRToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF531E1BED512300CC2245 /* PRToken.m */; };
 		47BF53271BED512300CC2245 /* PRTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53211BED512300CC2245 /* PRTimerViewController.m */; };
-		47BF53281BED512300CC2245 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53231BED512300CC2245 /* ViewController.m */; };
+		47BF53281BED512300CC2245 /* PRGetStartedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53231BED512300CC2245 /* PRGetStartedViewController.m */; };
 		47BF532B1BED515F00CC2245 /* PRKeychainManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF532A1BED515F00CC2245 /* PRKeychainManager.m */; };
 		47BF532F1BED519000CC2245 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF532E1BED519000CC2245 /* KeychainItemWrapper.m */; };
 		47BF53321BED5E2F00CC2245 /* PRTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53311BED5E2F00CC2245 /* PRTask.m */; };
@@ -47,6 +48,8 @@
 		471E6A161BEE51FC0017329D /* PRUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUser.m; sourceTree = "<group>"; };
 		471E6A181BEE55DD0017329D /* PRUserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRUserDefaultsManager.h; sourceTree = "<group>"; };
 		471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUserDefaultsManager.m; sourceTree = "<group>"; };
+		47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListViewController.h; sourceTree = "<group>"; };
+		47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTaskListViewController.m; sourceTree = "<group>"; };
 		47BF53181BED512300CC2245 /* PRApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRApiManager.h; sourceTree = "<group>"; };
 		47BF53191BED512300CC2245 /* PRApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRApiManager.m; sourceTree = "<group>"; };
 		47BF531B1BED512300CC2245 /* PRObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRObject.h; sourceTree = "<group>"; };
@@ -55,8 +58,8 @@
 		47BF531E1BED512300CC2245 /* PRToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRToken.m; sourceTree = "<group>"; };
 		47BF53201BED512300CC2245 /* PRTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTimerViewController.h; sourceTree = "<group>"; };
 		47BF53211BED512300CC2245 /* PRTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTimerViewController.m; sourceTree = "<group>"; };
-		47BF53221BED512300CC2245 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		47BF53231BED512300CC2245 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		47BF53221BED512300CC2245 /* PRGetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRGetStartedViewController.h; sourceTree = "<group>"; };
+		47BF53231BED512300CC2245 /* PRGetStartedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRGetStartedViewController.m; sourceTree = "<group>"; };
 		47BF53291BED515F00CC2245 /* PRKeychainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRKeychainManager.h; sourceTree = "<group>"; };
 		47BF532A1BED515F00CC2245 /* PRKeychainManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRKeychainManager.m; sourceTree = "<group>"; };
 		47BF532D1BED519000CC2245 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
@@ -142,10 +145,12 @@
 		47BF531F1BED512300CC2245 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				47BF53221BED512300CC2245 /* PRGetStartedViewController.h */,
+				47BF53231BED512300CC2245 /* PRGetStartedViewController.m */,
+				47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */,
+				47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */,
 				47BF53201BED512300CC2245 /* PRTimerViewController.h */,
 				47BF53211BED512300CC2245 /* PRTimerViewController.m */,
-				47BF53221BED512300CC2245 /* ViewController.h */,
-				47BF53231BED512300CC2245 /* ViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -384,7 +389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47BF53281BED512300CC2245 /* ViewController.m in Sources */,
+				47BF53281BED512300CC2245 /* PRGetStartedViewController.m in Sources */,
 				47D3A54A1BEBF41A004844E6 /* AppDelegate.m in Sources */,
 				47BF53321BED5E2F00CC2245 /* PRTask.m in Sources */,
 				471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */,
@@ -397,6 +402,7 @@
 				47D3A5471BEBF41A004844E6 /* main.m in Sources */,
 				47BF532B1BED515F00CC2245 /* PRKeychainManager.m in Sources */,
 				47BF532F1BED519000CC2245 /* KeychainItemWrapper.m in Sources */,
+				47BC99C41BEEA4F900A367C2 /* PRTaskListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
