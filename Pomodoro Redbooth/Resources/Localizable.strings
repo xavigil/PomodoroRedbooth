@@ -6,10 +6,18 @@
   Copyright © 2015 Xavi Gil. All rights reserved.
 */
 
-"timer_title" = "Timer";
-
 "task_list_title" = "SELECT TASK";
+"timer_title" = "TIMER";
 
 "today" = "TODAY";
 "due_soon" = "DUE SOON";
 "far_future" = "FAR FUTURE";
+
+"alert_logout_title" = "Logout";
+"alert_logout_message" = "Do you really want to logout?";
+"alert_abandon_title" = "Abandon";
+"alert_abandon_message" = "Are you sure you want to abandon current pomodoro?";
+
+"yes" = "Yes";
+"no" = "No";
+

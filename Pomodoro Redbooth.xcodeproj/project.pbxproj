@@ -12,6 +12,7 @@
 		471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A131BEE191F0017329D /* PRApiOAuthManager.m */; };
 		471E6A171BEE51FC0017329D /* PRUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A161BEE51FC0017329D /* PRUser.m */; };
 		471E6A1A1BEE55DD0017329D /* PRUserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */; };
+		47622B891BEFA23B0068250D /* PRTimerInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 47622B881BEFA23B0068250D /* PRTimerInteractor.m */; };
 		47BC99C41BEEA4F900A367C2 /* PRTaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */; };
 		47BF53241BED512300CC2245 /* PRApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF53191BED512300CC2245 /* PRApiManager.m */; };
 		47BF53251BED512300CC2245 /* PRObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BF531C1BED512300CC2245 /* PRObject.m */; };
@@ -52,6 +53,10 @@
 		471E6A161BEE51FC0017329D /* PRUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUser.m; sourceTree = "<group>"; };
 		471E6A181BEE55DD0017329D /* PRUserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRUserDefaultsManager.h; sourceTree = "<group>"; };
 		471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUserDefaultsManager.m; sourceTree = "<group>"; };
+		47622B861BEFA1C50068250D /* PRTimerViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRTimerViewControllerDelegate.h; sourceTree = "<group>"; };
+		47622B871BEFA23B0068250D /* PRTimerInteractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTimerInteractor.h; sourceTree = "<group>"; };
+		47622B881BEFA23B0068250D /* PRTimerInteractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTimerInteractor.m; sourceTree = "<group>"; };
+		47622B8A1BEFA24F0068250D /* PRTimerInteractorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRTimerInteractorDelegate.h; sourceTree = "<group>"; };
 		478222EE1BEF7127005BF0E5 /* PRTaskListViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListViewControllerDelegate.h; sourceTree = "<group>"; };
 		478222EF1BEF7861005BF0E5 /* PRTaskListInteractorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRTaskListInteractorDelegate.h; sourceTree = "<group>"; };
 		47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListViewController.h; sourceTree = "<group>"; };
@@ -124,6 +129,9 @@
 				478222EF1BEF7861005BF0E5 /* PRTaskListInteractorDelegate.h */,
 				470A5ED51BEF64F100EE4FCF /* PRTaskListInteractor.h */,
 				470A5ED61BEF64F100EE4FCF /* PRTaskListInteractor.m */,
+				47622B8A1BEFA24F0068250D /* PRTimerInteractorDelegate.h */,
+				47622B871BEFA23B0068250D /* PRTimerInteractor.h */,
+				47622B881BEFA23B0068250D /* PRTimerInteractor.m */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -167,6 +175,7 @@
 				478222EE1BEF7127005BF0E5 /* PRTaskListViewControllerDelegate.h */,
 				47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */,
 				47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */,
+				47622B861BEFA1C50068250D /* PRTimerViewControllerDelegate.h */,
 				47BF53201BED512300CC2245 /* PRTimerViewController.h */,
 				47BF53211BED512300CC2245 /* PRTimerViewController.m */,
 			);
@@ -420,6 +429,7 @@
 				47BF53261BED512300CC2245 /* PRToken.m in Sources */,
 				47BF53271BED512300CC2245 /* PRTimerViewController.m in Sources */,
 				47D3A5471BEBF41A004844E6 /* main.m in Sources */,
+				47622B891BEFA23B0068250D /* PRTimerInteractor.m in Sources */,
 				47BF532B1BED515F00CC2245 /* PRKeychainManager.m in Sources */,
 				47BF532F1BED519000CC2245 /* KeychainItemWrapper.m in Sources */,
 				47BC99C41BEEA4F900A367C2 /* PRTaskListViewController.m in Sources */,

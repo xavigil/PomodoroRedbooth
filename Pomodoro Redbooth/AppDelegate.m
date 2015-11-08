@@ -15,6 +15,9 @@
 #import "PRTaskListInteractor.h"
 #import "PRTaskListViewControllerDelegate.h"
 #import "PRTaskListViewController.h"
+#import "PRTimerInteractor.h"
+#import "PRTimerViewControllerDelegate.h"
+#import "PRTimerViewController.h"
 
 
 @interface AppDelegate ()
@@ -87,7 +90,11 @@
     }
     else if([view isEqualToString:@"timer"])
     {
-        NSAssert(false, @"interactorForView not implemented");
+        delegate = [[PRTimerInteractor alloc]init];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PRTimerViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"timer"];
+        vc.interactor = (PRTimerInteractor *)delegate;
+        ((PRTimerInteractor *)delegate).vcDelegate = vc;
     }
     return delegate;
 }

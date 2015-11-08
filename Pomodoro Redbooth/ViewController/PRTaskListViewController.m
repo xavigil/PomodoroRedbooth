@@ -29,6 +29,11 @@
     self.tableView.delegate = self;
     
     self.title = NSLocalizedString(@"task_list_title", nil);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                              initWithImage:[UIImage imageNamed:@"ic_exit_to_app_white_36pt"]
+                                              style:UIBarButtonItemStylePlain
+                                              target:self
+                                              action:@selector(onLogout)];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.tintColor = SECONDARY_COLOR;
@@ -39,10 +44,21 @@
     [self.tableView addSubview:_refreshControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UINavigationBar *bar = self.navigationController.navigationBar;
+    bar.hidden = NO;
+    self.navigationItem.hidesBackButton = YES;
+
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     if(_showSpinnerAfterViewLoad){
+        _showSpinnerAfterViewLoad = NO;
         [self showSpinner];
     }
 }
@@ -52,25 +68,31 @@
     [self.interactor requestTasks];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)onLogout
 {
-    [super viewWillAppear:animated];
-    UINavigationBar *bar = self.navigationController.navigationBar;
-    bar.hidden = NO;
-    self.navigationItem.hidesBackButton = YES;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"alert_logout_title", nil)
+                                                                             message:NSLocalizedString(@"alert_logout_message", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yes = [UIAlertAction
+                          actionWithTitle:NSLocalizedString(@"yes", nil)
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              [self.interactor logout];
+                          }];
+    UIAlertAction* no = [UIAlertAction
+                         actionWithTitle:NSLocalizedString(@"no", nil)
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alertController dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    
+    [alertController addAction:no];
+    [alertController addAction:yes];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
-
-// **********************************
-// TODO: Remove the request logic from the view controller
-
-
-- (IBAction)onLogout:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:self userInfo:nil];
-}
-
-
-// **********************************
-
 
 #pragma mark - PRTaskListViewControllerDelegate
 
@@ -111,11 +133,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return ((NSArray *)_tasksSections[@(section)]).count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 44.0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -159,5 +176,17 @@
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 44.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PRTask *task = ((NSArray *)_tasksSections[@(indexPath.section)])[indexPath.row];
+    [self.interactor showTimerForTask:task];
+}
 
 @end

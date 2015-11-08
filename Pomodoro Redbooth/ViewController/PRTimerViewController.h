@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PRTimerInteractorDelegate.h"
+#import "PRTimerViewControllerDelegate.h"
 
-@interface PRTimerViewController : UIViewController
+@interface PRTimerViewController : UIViewController<PRTimerViewControllerDelegate>
+
+@property (nonatomic, strong) id<PRTimerInteractorDelegate> interactor;
 
 @end

@@ -66,24 +66,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YAN-KN-e4r">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="554"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhI-LG-zzN">
-                                <rect key="frame" x="269" y="562" width="62" height="30"/>
-                                <state key="normal" title="LOGOUT"/>
-                                <connections>
-                                    <action selector="onLogout:" destination="DpS-Au-RE5" eventType="touchUpInside" id="EhW-q4-jwe"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="YAN-KN-e4r" firstAttribute="leading" secondItem="Ldz-C1-3rr" secondAttribute="leading" id="21r-Ev-phe"/>
-                            <constraint firstItem="KhI-LG-zzN" firstAttribute="top" secondItem="YAN-KN-e4r" secondAttribute="bottom" constant="8" id="45w-Rr-FAT"/>
-                            <constraint firstItem="KhI-LG-zzN" firstAttribute="centerX" secondItem="Ldz-C1-3rr" secondAttribute="centerX" id="D6w-al-Qh0"/>
                             <constraint firstAttribute="trailing" secondItem="YAN-KN-e4r" secondAttribute="trailing" id="NzE-2u-7he"/>
-                            <constraint firstItem="NU4-rV-1lB" firstAttribute="top" secondItem="KhI-LG-zzN" secondAttribute="bottom" constant="8" id="tov-EW-dUe"/>
+                            <constraint firstItem="NU4-rV-1lB" firstAttribute="top" secondItem="YAN-KN-e4r" secondAttribute="bottom" id="xJo-KO-A4d"/>
                             <constraint firstItem="YAN-KN-e4r" firstAttribute="top" secondItem="Ldz-C1-3rr" secondAttribute="top" id="xqe-rU-TbE"/>
                         </constraints>
                     </view>
@@ -98,7 +89,7 @@
         <!--Timer View Controller-->
         <scene sceneID="Ica-OG-ZjC">
             <objects>
-                <viewController storyboardIdentifier="timer_vc" id="Hj6-en-3fX" customClass="PRTimerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="timer" id="Hj6-en-3fX" customClass="PRTimerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9iV-Kz-YY8"/>
                         <viewControllerLayoutGuide type="bottom" id="ACY-Cy-4mW"/>
@@ -106,20 +97,7 @@
                     <view key="view" contentMode="scaleToFill" id="STl-Op-rj9">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0z-Fc-fIh">
-                                <rect key="frame" x="266" y="550" width="68" height="30"/>
-                                <state key="normal" title="Get Tasks"/>
-                                <connections>
-                                    <action selector="onGetTasks:" destination="Hj6-en-3fX" eventType="touchUpInside" id="Jcw-AM-W0k"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="N0z-Fc-fIh" firstAttribute="centerX" secondItem="STl-Op-rj9" secondAttribute="centerX" id="fWo-cn-fKQ"/>
-                            <constraint firstItem="ACY-Cy-4mW" firstAttribute="top" secondItem="N0z-Fc-fIh" secondAttribute="bottom" constant="20" id="sx0-gs-eBi"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dxl-nM-daT" userLabel="First Responder" sceneMemberID="firstResponder"/>

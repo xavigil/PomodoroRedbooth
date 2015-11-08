@@ -6,8 +6,14 @@
 //  Copyright © 2015 Xavi Gil. All rights reserved.
 //
 
+#import "PRTask.h"
+
 @protocol PRTaskListInteractorDelegate
 
 - (void)requestTasks;
+
+- (void)showTimerForTask:(PRTask *)task;
+
+- (void)logout;
 
 @end

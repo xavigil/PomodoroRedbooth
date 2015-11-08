@@ -10,6 +10,8 @@
 #import "PRApiManager.h"
 #import "PRUserDefaultsManager.h"
 #import "PRConstants.h"
+#import "AppDelegate.h"
+#import "PRTimerInteractor.h"
 
 typedef enum{
     TODAY,
@@ -54,6 +56,20 @@ typedef enum{
             }
         }];
     }
+}
+
+- (void)showTimerForTask:(PRTask *)task
+{
+    if(!task) return;
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    id<PRInteractorDelegate> interactor = [appDelegate interactorForView:@"timer"];
+    [interactor presentViewFromViewController:(UIViewController *)self.vcDelegate];
+    ((PRTimerInteractor *)interactor).task = task;
+}
+
+- (void)logout
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:self userInfo:nil];
 }
 
 #pragma mark - Private methods
