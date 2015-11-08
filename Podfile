@@ -7,4 +7,5 @@ target 'Pomodoro Redbooth' do
   pod 'AFNetworking', '~> 2.6'
   pod 'Motis', '~>1.4.0'
   pod 'SFRoundProgressCounterView'
+  pod 'MBProgressHUD', '~> 0.9'
 end

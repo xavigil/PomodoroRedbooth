@@ -10,6 +10,8 @@
 
 @interface PRGetStartedViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *lblTItle;
+@property (weak, nonatomic) IBOutlet UIButton *btnGetStarted;
 
 @end
 

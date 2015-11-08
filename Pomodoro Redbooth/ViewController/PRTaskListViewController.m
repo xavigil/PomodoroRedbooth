@@ -15,6 +15,8 @@
     UIRefreshControl *_refreshControl;
     NSDictionary *_tasksSections;
     BOOL _showSpinnerAfterViewLoad;
+    NSDateFormatter *_dateFormatter;
+
 }
 
 - (void)viewDidLoad
@@ -25,6 +27,8 @@
 
 - (void)setup
 {
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
@@ -169,10 +173,19 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+        cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     PRTask *task = (PRTask *)((NSArray *)_tasksSections[@(indexPath.section)])[indexPath.row];
-    cell.textLabel.text = task.name;
+    NSString *name = task.name;
+    NSInteger limit = 22;
+    if(name.length > limit){
+        name = [NSString stringWithFormat:@"%@...",[task.name substringToIndex:MIN(limit,task.name.length)]];
+    }
+    cell.textLabel.text = name;
+    NSArray *comps = [task.dueOn componentsSeparatedByString:@"-"];
+    NSString *monthName = [[_dateFormatter monthSymbols] objectAtIndex:([comps[1] integerValue]-1)];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", monthName, comps[2]];
     return cell;
 }
 

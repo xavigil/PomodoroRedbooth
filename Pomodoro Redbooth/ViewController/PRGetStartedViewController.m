@@ -11,6 +11,7 @@
 #import "PRConstants.h"
 #import "AppDelegate.h"
 #import "PRInteractorDelegate.h"
+#import "PRConstants.h"
 
 
 @interface PRGetStartedViewController ()
@@ -22,8 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:PRIMARY_COLOR];
-    
+    [self setup];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onAuthorizationCodeReceived:)
                                                  name:PR_NOTIF_AUTHORIZATION_RECEIVED
@@ -32,6 +32,15 @@
     {
         [self pushNextViewControllerAnimated:NO];
     }
+}
+
+- (void)setup
+{
+    [self.lblTItle setFont:FONT_GET_STARTED_TITLE];
+    [self.lblTItle setText:@"POMODORO\nREDBOOTH"];
+    [self.btnGetStarted setBackgroundColor:PRIMARY_COLOR];
+    [self.btnGetStarted setTintColor:[UIColor whiteColor]];
+    [self.btnGetStarted.titleLabel setFont:FONT_SECTIONS];
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -20,7 +20,10 @@
 
 #define PRIMARY_COLOR UIColorFromRGB(0xF44336)
 #define SECONDARY_COLOR UIColorFromRGB(0xE57373)
+#define BREAK_MODE_COLOR UIColorFromRGB(0x00BCD4)
 
+#define FONT_GET_STARTED_TITLE [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:45.0]
+#define FONT_PHASE [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:25.0]
 #define FONT_TITLE [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0]
 #define FONT_SECTIONS [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0]
 

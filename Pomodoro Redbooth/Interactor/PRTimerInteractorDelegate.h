@@ -12,4 +12,10 @@
 
 - (void)playbackTouch;
 
+- (void)pomodoroPhaseFinished;
+
+- (void)exit;
+- (void)addTimeSpentToTask;
+- (void)addTimeSpentToTaskAndResolve;
+
 @end
