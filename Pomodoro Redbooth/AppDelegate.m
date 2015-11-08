@@ -12,7 +12,9 @@
 #import "PRConstants.h"
 #import "PRApiOAuthManager.h"
 #import "PRUserDefaultsManager.h"
-
+#import "PRTaskListInteractor.h"
+#import "PRTaskListViewControllerDelegate.h"
+#import "PRTaskListViewController.h"
 
 
 @interface AppDelegate ()
@@ -70,7 +72,24 @@
                                                         object:self
                                                       userInfo:@{PR_NOTIF_AUTHORIZATION_RECEIVED_PARAM_CODE:components[1]}];
     return YES;
-        
+}
+
+- (id<PRInteractorDelegate>)interactorForView:(NSString *)view
+{
+    id<PRInteractorDelegate> delegate;
+    if([view isEqualToString:@"list"])
+    {
+        delegate = [[PRTaskListInteractor alloc]init];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PRTaskListViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"task_list"];
+        vc.interactor = (PRTaskListInteractor *)delegate;
+        ((PRTaskListInteractor *)delegate).vcDelegate = vc;
+    }
+    else if([view isEqualToString:@"timer"])
+    {
+        NSAssert(false, @"interactorForView not implemented");
+    }
+    return delegate;
 }
 
 @end

@@ -7,17 +7,12 @@
 //
 
 #import "PRTaskListViewController.h"
-#import "PRApiManager.h"
-#import "PRUserDefaultsManager.h"
 #import "PRConstants.h"
-
-typedef enum{
-    TODAY,
-    DUE_SOON,
-    FAR_FUTURE
-}eSection;
+#import "PRTask.h"
 
 @implementation PRTaskListViewController{
+
+    UIRefreshControl *_refreshControl;
     NSDictionary *_tasksSections;
 }
 
@@ -28,26 +23,26 @@ typedef enum{
     [self setup];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    UINavigationBar *bar = self.navigationController.navigationBar;
-//    bar.hidden = NO;
-//
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    
-//}
-
-
 - (void)setup
 {
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    self.title = @"SELECT TASK";
+    self.title = NSLocalizedString(@"task_list_title", nil);
     
-    [self mockRequest];
-    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.tintColor = SECONDARY_COLOR;
+    [_refreshControl addTarget:self
+                        action:@selector(refreshData)
+              forControlEvents:UIControlEventValueChanged];
+
+    [self.tableView addSubview:_refreshControl];
+}
+
+- (void)refreshData
+{
+    NSLog(@"refreshData");
+    [self.interactor requestTasks];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,96 +53,9 @@ typedef enum{
     self.navigationItem.hidesBackButton = YES;
 }
 
-//- (void) viewWillLayoutSubviews
-//{
-//    [super viewWillLayoutSubviews];
-//    [self.navigationController setNavigationBarHidden:NO];
-//}
-
-
 // **********************************
 // TODO: Remove the request logic from the view controller
-- (void)mockRequest
-{
-    NSInteger userId = [[PRUserDefaultsManager sharedManager] userId];
-    void(^taskListRequest)(NSInteger) = ^(NSInteger uid){
-        [[PRApiManager sharedManager] taskListAssignedToUserId:uid completion:^(NSArray *tasks, NSError *error){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showTasksInSections:[self filterTasksIntoSections:tasks]];
-            });
-        }];
-    };
-    
-    if(userId>0){
-        taskListRequest(userId);
-    }
-    else
-    {
-        [[PRApiManager sharedManager]userInfoCompletion:^(PRUser *user, NSError *error) {
-            if(!error){
-                [[PRUserDefaultsManager sharedManager] setUserId:[user.id integerValue]];
-                taskListRequest([user.id integerValue]);
-            }
-        }];
-    }
-}
 
-- (NSDictionary *)filterTasksIntoSections:(NSArray *)tasks
-{
-    NSMutableArray *sortedTasks = [tasks mutableCopy];
-    [sortedTasks sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dueOn" ascending:YES]]];
-    
-    NSMutableArray *dueToday = [@[]mutableCopy];
-    NSMutableArray *dueSoon = [@[]mutableCopy];
-    NSMutableArray *dueFarFuture = [@[]mutableCopy];
-    NSString *todayLimit = [self dateLimitForSection:TODAY];
-    NSString *dueSoonLimit = [self dateLimitForSection:DUE_SOON];
-    
-    for(PRTask *t in sortedTasks){
-        NSMutableArray *ar;
-        if([self string:t.dueOn smallerOrEqualThanString:todayLimit])
-            ar = dueToday;
-        else if([self string:t.dueOn smallerOrEqualThanString:dueSoonLimit])
-            ar = dueSoon;
-        else
-            ar = dueFarFuture;
-        [ar addObject:t];
-    }
-    
-    return @{@(TODAY):[dueToday copy], @(DUE_SOON):[dueSoon copy], @(FAR_FUTURE):[dueFarFuture copy]};
-}
-
-- (BOOL)string:(NSString *)string1 smallerOrEqualThanString:(NSString *)string2
-{
-    NSStringCompareOptions comparisonOptions = NSCaseInsensitiveSearch | NSNumericSearch |
-                                                NSWidthInsensitiveSearch | NSForcedOrderingSearch;
-    
-    NSRange string1Range = NSMakeRange(0, [string1 length]);
-    
-    NSComparisonResult comparison = [string1 compare:string2
-                                             options:comparisonOptions
-                                               range:string1Range
-                                              locale:nil];
-    return (comparison == NSOrderedAscending || comparison == NSOrderedSame);
-}
-
-- (NSString *)dateLimitForSection:(eSection)section
-{
-    NSUInteger units = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-    NSDateComponents *comps = [[NSCalendar currentCalendar] components:units fromDate:[NSDate date]];
-    switch (section) {
-        case DUE_SOON:
-            comps.day += 7;
-            break;
-        case FAR_FUTURE:
-            NSAssert(NO, @"There is no limit for FAR_FUTURE");
-            break;
-        default:
-            break;
-    }
-    
-    return [NSString stringWithFormat:@"%ld-%02ld-%02ld",comps.year, comps.month, comps.day];
-}
 
 - (IBAction)onLogout:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:self userInfo:nil];
@@ -157,8 +65,21 @@ typedef enum{
 // **********************************
 
 
+#pragma mark - PRTaskListViewControllerDelegate
+
+- (UIViewController *)vc
+{
+    return self;
+}
+
+- (void)showSpinner
+{
+    NSLog(@"not impleemnted yet");
+}
+
 - (void)showTasksInSections:(NSDictionary *)tasksSections
 {
+    [_refreshControl endRefreshing];
     BOOL anyTask = (((NSArray *)tasksSections[@(0)]).count > 0 ||
                     ((NSArray *)tasksSections[@(1)]).count > 0 ||
                     ((NSArray *)tasksSections[@(2)]).count > 0);
@@ -199,22 +120,6 @@ typedef enum{
     return ((NSArray *)_tasksSections[@(section)]).count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    NSString *title;
-//    switch (section) {
-//        case TODAY:
-//            title = NSLocalizedString(@"today", nil);
-//            break;
-//        case DUE_SOON:
-//            title = NSLocalizedString(@"due_soon", nil);
-//            break;
-//        case FAR_FUTURE:
-//            title = NSLocalizedString(@"far_future", nil);
-//            break;
-//    }
-//    return title;
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 44.0;
@@ -230,13 +135,13 @@ typedef enum{
     
     NSString *title;
     switch (section) {
-        case TODAY:
+        case 0:
             title = NSLocalizedString(@"today", nil);
             break;
-        case DUE_SOON:
+        case 1:
             title = NSLocalizedString(@"due_soon", nil);
             break;
-        case FAR_FUTURE:
+        case 2:
             title = NSLocalizedString(@"far_future", nil);
             break;
     }

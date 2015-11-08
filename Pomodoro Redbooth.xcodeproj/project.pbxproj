@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		10758499DB5C02A195D98A63 /* Pods_Pomodoro_Redbooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4681BB4F74A082DFF1475197 /* Pods_Pomodoro_Redbooth.framework */; };
+		470A5ED71BEF64F100EE4FCF /* PRTaskListInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 470A5ED61BEF64F100EE4FCF /* PRTaskListInteractor.m */; };
 		471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A131BEE191F0017329D /* PRApiOAuthManager.m */; };
 		471E6A171BEE51FC0017329D /* PRUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A161BEE51FC0017329D /* PRUser.m */; };
 		471E6A1A1BEE55DD0017329D /* PRUserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */; };
@@ -41,6 +42,9 @@
 
 /* Begin PBXFileReference section */
 		4681BB4F74A082DFF1475197 /* Pods_Pomodoro_Redbooth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pomodoro_Redbooth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		470A5ED51BEF64F100EE4FCF /* PRTaskListInteractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListInteractor.h; sourceTree = "<group>"; };
+		470A5ED61BEF64F100EE4FCF /* PRTaskListInteractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTaskListInteractor.m; sourceTree = "<group>"; };
+		470A5ED81BEF650800EE4FCF /* PRInteractorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRInteractorDelegate.h; sourceTree = "<group>"; };
 		471E6A111BEE18AD0017329D /* PRApiOAuthDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRApiOAuthDelegate.h; sourceTree = "<group>"; };
 		471E6A121BEE191F0017329D /* PRApiOAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRApiOAuthManager.h; sourceTree = "<group>"; };
 		471E6A131BEE191F0017329D /* PRApiOAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRApiOAuthManager.m; sourceTree = "<group>"; };
@@ -48,6 +52,8 @@
 		471E6A161BEE51FC0017329D /* PRUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUser.m; sourceTree = "<group>"; };
 		471E6A181BEE55DD0017329D /* PRUserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRUserDefaultsManager.h; sourceTree = "<group>"; };
 		471E6A191BEE55DD0017329D /* PRUserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRUserDefaultsManager.m; sourceTree = "<group>"; };
+		478222EE1BEF7127005BF0E5 /* PRTaskListViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListViewControllerDelegate.h; sourceTree = "<group>"; };
+		478222EF1BEF7861005BF0E5 /* PRTaskListInteractorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRTaskListInteractorDelegate.h; sourceTree = "<group>"; };
 		47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTaskListViewController.h; sourceTree = "<group>"; };
 		47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTaskListViewController.m; sourceTree = "<group>"; };
 		47BF53181BED512300CC2245 /* PRApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRApiManager.h; sourceTree = "<group>"; };
@@ -111,6 +117,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		470A5ED41BEF64F100EE4FCF /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				470A5ED81BEF650800EE4FCF /* PRInteractorDelegate.h */,
+				478222EF1BEF7861005BF0E5 /* PRTaskListInteractorDelegate.h */,
+				470A5ED51BEF64F100EE4FCF /* PRTaskListInteractor.h */,
+				470A5ED61BEF64F100EE4FCF /* PRTaskListInteractor.m */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
 		47BF53171BED512300CC2245 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +164,7 @@
 			children = (
 				47BF53221BED512300CC2245 /* PRGetStartedViewController.h */,
 				47BF53231BED512300CC2245 /* PRGetStartedViewController.m */,
+				478222EE1BEF7127005BF0E5 /* PRTaskListViewControllerDelegate.h */,
 				47BC99C21BEEA4F900A367C2 /* PRTaskListViewController.h */,
 				47BC99C31BEEA4F900A367C2 /* PRTaskListViewController.m */,
 				47BF53201BED512300CC2245 /* PRTimerViewController.h */,
@@ -190,6 +208,7 @@
 				47D3A5481BEBF41A004844E6 /* AppDelegate.h */,
 				47D3A5491BEBF41A004844E6 /* AppDelegate.m */,
 				47D3A56D1BEC0571004844E6 /* PRConstants.h */,
+				470A5ED41BEF64F100EE4FCF /* Interactor */,
 				47BF53171BED512300CC2245 /* Manager */,
 				47BF531A1BED512300CC2245 /* Model */,
 				47BF532C1BED519000CC2245 /* Util */,
@@ -392,6 +411,7 @@
 				47BF53281BED512300CC2245 /* PRGetStartedViewController.m in Sources */,
 				47D3A54A1BEBF41A004844E6 /* AppDelegate.m in Sources */,
 				47BF53321BED5E2F00CC2245 /* PRTask.m in Sources */,
+				470A5ED71BEF64F100EE4FCF /* PRTaskListInteractor.m in Sources */,
 				471E6A141BEE191F0017329D /* PRApiOAuthManager.m in Sources */,
 				471E6A171BEE51FC0017329D /* PRUser.m in Sources */,
 				471E6A1A1BEE55DD0017329D /* PRUserDefaultsManager.m in Sources */,

@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PRTaskListViewControllerDelegate.h"
+#import "PRTaskListInteractorDelegate.h"
 
-@interface PRTaskListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface PRTaskListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, PRTaskListViewControllerDelegate>
+
+@property (nonatomic, strong) id<PRTaskListInteractorDelegate> interactor;
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-
-- (void)showTasksInSections:(NSDictionary *)taskSections;
 
 @end

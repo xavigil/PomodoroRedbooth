@@ -230,7 +230,6 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
 {
     NSString *params = [NSString stringWithFormat:@"assigned_user_id=%ld&status=open", userId];
     [self GET:[self urlWithPath:kPRTasks queryParams:params] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        NSLog(@"tasks = %@", responseObject);
         NSMutableArray *tasks = [@[]mutableCopy];
         for(id taskJson in responseObject)
         {
@@ -238,6 +237,7 @@ NSString * const kPRAuthorizationUrl = @"https://redbooth.com/oauth2/authorize?c
             [task mts_setValuesForKeysWithDictionary:taskJson];
             [tasks addObject:task];
         }
+        NSLog(@"ApiManager: received tasks count = %ld", tasks.count);
         completion([tasks copy], nil);
         
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error){

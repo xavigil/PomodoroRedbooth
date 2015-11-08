@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PRInteractorDelegate.h"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
+- (id<PRInteractorDelegate>)interactorForView:(NSString *)view;
 
 @end
 

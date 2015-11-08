@@ -6,7 +6,9 @@
   Copyright © 2015 Xavi Gil. All rights reserved.
 */
 
-"timer" = "Timer";
+"timer_title" = "Timer";
+
+"task_list_title" = "SELECT TASK";
 
 "today" = "TODAY";
 "due_soon" = "DUE SOON";

@@ -9,7 +9,9 @@
 #import "PRGetStartedViewController.h"
 #import "PRApiManager.h"
 #import "PRConstants.h"
-#import "PRTimerViewController.h"
+#import "AppDelegate.h"
+#import "PRInteractorDelegate.h"
+
 
 @interface PRGetStartedViewController ()
 
@@ -59,8 +61,9 @@
 
 - (void)pushNextViewControllerAnimated:(BOOL)animated
 {
-    [self.navigationController pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"task_list"]
-                                         animated:animated];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    id<PRInteractorDelegate> interactor = [appDelegate interactorForView:@"list"];
+    [interactor presentViewFromViewController:self];
 }
 
 #pragma mark - IBActions
