@@ -203,9 +203,15 @@
         name = [NSString stringWithFormat:@"%@...",[task.name substringToIndex:MIN(limit,task.name.length)]];
     }
     cell.textLabel.text = name;
-    NSArray *comps = [task.dueOn componentsSeparatedByString:@"-"];
-    NSString *monthName = [[_dateFormatter monthSymbols] objectAtIndex:([comps[1] integerValue]-1)];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", monthName, comps[2]];
+    NSString *monthName = @"";
+    NSString *day = @"";
+    if(task.dueOn && task.dueOn.length>0)
+    {
+        NSArray *comps = [task.dueOn componentsSeparatedByString:@"-"];
+        monthName = [[_dateFormatter monthSymbols] objectAtIndex:([comps[1] integerValue]-1)];
+        day = comps[2];
+    }
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", monthName, day];
     return cell;
 }
 
