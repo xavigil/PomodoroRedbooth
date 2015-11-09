@@ -10,8 +10,8 @@
 #import "PRTask.h"
 #import "PRAPiManager.h"
 
-#define POMODORO_INTERVAL 0.14 * 60 * 1000
-#define POMODORO_BREAK_INTERVAL 0.05 * 60 * 1000
+#define POMODORO_INTERVAL 10 * 60 * 1000
+#define POMODORO_BREAK_INTERVAL 1 * 60 * 1000
 
 typedef enum{
     IDLE,
@@ -90,8 +90,7 @@ typedef enum{
 - (void)addTimeSpentToTask
 {
     [self.vcDelegate showHUD];
-    NSInteger minutes = (_pomodoroCounter * POMODORO_INTERVAL/1000)/60;
-    [[PRApiManager sharedManager] addTimeSpent:minutes toTaskId:[_task.id integerValue] completion:^(NSError *error) {
+    [[PRApiManager sharedManager] addTimeSpent:[self minutesSpent] toTaskId:[_task.id integerValue] completion:^(NSError *error) {
         [self.vcDelegate showHUD];
         [((UIViewController *)self.vcDelegate).navigationController popViewControllerAnimated:YES];
     }];
@@ -101,9 +100,8 @@ typedef enum{
 {
     [self.vcDelegate showHUD];
     [self.vcDelegate showHUD];
-    NSInteger minutes = _pomodoroCounter * POMODORO_INTERVAL/1000;
     NSInteger taskId = [_task.id integerValue];
-    [[PRApiManager sharedManager] addTimeSpent:minutes toTaskId:taskId completion:^(NSError *error)
+    [[PRApiManager sharedManager] addTimeSpent:[self minutesSpent] toTaskId:taskId completion:^(NSError *error)
     {
         if(!error)
         {
@@ -119,6 +117,11 @@ typedef enum{
 }
 
 #pragma mark - Private methods
+
+- (NSInteger)minutesSpent
+{
+    return (_pomodoroCounter * POMODORO_INTERVAL/1000)/60;
+}
 
 - (void)setNextPhase
 {
