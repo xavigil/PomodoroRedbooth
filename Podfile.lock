@@ -22,6 +22,7 @@ PODS:
     - AFNetworking/NSURLSession
   - MBProgressHUD (0.9.1)
   - Motis (1.4.0)
+  - OCMock (3.2)
   - SFRoundProgressCounterView (0.0.6):
     - TTTAttributedLabel (~> 1.7.1)
   - TTTAttributedLabel (1.7.5)
@@ -30,12 +31,14 @@ DEPENDENCIES:
   - AFNetworking (~> 2.6)
   - MBProgressHUD (~> 0.9)
   - Motis (~> 1.4.0)
+  - OCMock (~> 3.2)
   - SFRoundProgressCounterView
 
 SPEC CHECKSUMS:
   AFNetworking: 8e4e60500beb8bec644cf575beee72990a76d399
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Motis: 107a32fd0b6f026077bc31e5a846b45c0c548f55
+  OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   SFRoundProgressCounterView: 47517b12c7ad2dd38b2b910a1d5db48c6efb23c5
   TTTAttributedLabel: 19f03d496810ab0706c392a297c6d49fe173bac4
 

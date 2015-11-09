@@ -8,4 +8,13 @@ target 'Pomodoro Redbooth' do
   pod 'Motis', '~>1.4.0'
   pod 'SFRoundProgressCounterView'
   pod 'MBProgressHUD', '~> 0.9'
+  pod 'OCMock', '~> 3.2'
+end
+
+def testing_pods
+  pod 'AFNetworking', '~> 2.6'
+end
+
+target 'Pomodoro RedboothTests' do
+    testing_pods
 end

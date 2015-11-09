@@ -13,6 +13,9 @@
 #define POMODORO_INTERVAL 10 * 60 * 1000
 #define POMODORO_BREAK_INTERVAL 1 * 60 * 1000
 
+NSInteger const kPRPomodoroInterval = POMODORO_INTERVAL;
+NSInteger const kPRPomodoroBreakInterval = POMODORO_BREAK_INTERVAL;
+
 typedef enum{
     IDLE,
     PLAYING,
@@ -91,14 +94,13 @@ typedef enum{
 {
     [self.vcDelegate showHUD];
     [[PRApiManager sharedManager] addTimeSpent:[self minutesSpent] toTaskId:[_task.id integerValue] completion:^(NSError *error) {
-        [self.vcDelegate showHUD];
+        [self.vcDelegate hideHUD];
         [((UIViewController *)self.vcDelegate).navigationController popViewControllerAnimated:YES];
     }];
 }
 
 - (void)addTimeSpentToTaskAndResolve
 {
-    [self.vcDelegate showHUD];
     [self.vcDelegate showHUD];
     NSInteger taskId = [_task.id integerValue];
     [[PRApiManager sharedManager] addTimeSpent:[self minutesSpent] toTaskId:taskId completion:^(NSError *error)
@@ -109,7 +111,7 @@ typedef enum{
                 if(!error){
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"task_resolved" object:self userInfo:@{@"task_id":task.id}];
                 }
-                [self.vcDelegate showHUD];
+                [self.vcDelegate hideHUD];
                 [((UIViewController *)self.vcDelegate).navigationController popViewControllerAnimated:YES];
             }];
         }

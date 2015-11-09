@@ -12,6 +12,9 @@
 #import "PRTimerViewControllerDelegate.h"
 #import "PRTask.h"
 
+extern NSInteger const kPRPomodoroInterval;
+extern NSInteger const kPRPomodoroBreakInterval;
+
 @interface PRTimerInteractor : NSObject<PRInteractorDelegate, PRTimerInteractorDelegate>
 
 @property(nonatomic, weak) id<PRTimerViewControllerDelegate> vcDelegate;
