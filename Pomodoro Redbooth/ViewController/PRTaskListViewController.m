@@ -152,7 +152,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -177,6 +177,9 @@
             break;
         case 2:
             title = NSLocalizedString(@"far_future", nil);
+            break;
+        case 3:
+            title = NSLocalizedString(@"no_due_date", nil);
             break;
     }
 

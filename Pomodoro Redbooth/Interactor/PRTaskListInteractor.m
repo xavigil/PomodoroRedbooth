@@ -16,7 +16,8 @@
 typedef enum{
     TODAY,
     DUE_SOON,
-    FAR_FUTURE
+    FAR_FUTURE,
+    NO_DUE_DATE
 }eSection;
 
 
@@ -101,12 +102,15 @@ typedef enum{
     NSMutableArray *dueToday = [@[]mutableCopy];
     NSMutableArray *dueSoon = [@[]mutableCopy];
     NSMutableArray *dueFarFuture = [@[]mutableCopy];
+    NSMutableArray *noDueDate = [@[]mutableCopy];
     NSString *todayLimit = [self dateLimitForSection:TODAY];
     NSString *dueSoonLimit = [self dateLimitForSection:DUE_SOON];
     
     for(PRTask *t in sortedTasks){
         NSMutableArray *ar;
-        if([self string:t.dueOn smallerOrEqualThanString:todayLimit])
+        if(!t.dueOn || t.dueOn.length == 0)
+            ar = noDueDate;
+        else if([self string:t.dueOn smallerOrEqualThanString:todayLimit])
             ar = dueToday;
         else if([self string:t.dueOn smallerOrEqualThanString:dueSoonLimit])
             ar = dueSoon;
@@ -115,7 +119,7 @@ typedef enum{
         [ar addObject:t];
     }
     
-    return @{@(TODAY):[dueToday copy], @(DUE_SOON):[dueSoon copy], @(FAR_FUTURE):[dueFarFuture copy]};
+    return @{@(TODAY):[dueToday copy], @(DUE_SOON):[dueSoon copy], @(FAR_FUTURE):[dueFarFuture copy], @(NO_DUE_DATE):[noDueDate copy]};
 }
 
 - (BOOL)string:(NSString *)string1 smallerOrEqualThanString:(NSString *)string2

@@ -12,6 +12,7 @@
 "today" = "TODAY";
 "due_soon" = "DUE SOON";
 "far_future" = "FAR FUTURE";
+"no_due_date" = "NO DUE DATE";
 
 "alert_logout_title" = "Logout";
 "alert_logout_message" = "Do you really want to logout?";
