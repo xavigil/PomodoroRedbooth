@@ -133,9 +133,12 @@
     if(!afterDeletion)
     {
         [_refreshControl endRefreshing];
-        BOOL anyTask = (((NSArray *)tasksSections[@(0)]).count > 0 ||
-                        ((NSArray *)tasksSections[@(1)]).count > 0 ||
-                        ((NSArray *)tasksSections[@(2)]).count > 0);
+        BOOL anyTask = NO;
+        for(NSString *key in tasksSections.allKeys)
+        {
+            anyTask = (anyTask || ((NSArray *)tasksSections[key]).count > 0);
+            if(anyTask) break;
+        }
         _tasksSections = anyTask?tasksSections:nil;
         [self.tableView reloadData];
     }
